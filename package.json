@@ -1,9 +1,12 @@
 {
   "name": "timely-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Client for Timely App API.",
   "main": "build/index.js",
-  "files": ["build", "README.md"],
+  "files": [
+    "build",
+    "README.md"
+  ],
   "repository": "https://github.com/mariusc23/timely-client.git",
   "author": "Marius Craciunoiu <m@m23.io>",
   "license": "MIT",
