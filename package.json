@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Client for Timely App API.",
   "main": "build/index.js",
-  "files": ["build"],
+  "files": ["build", "README.md"],
   "repository": "https://github.com/mariusc23/timely-client.git",
   "author": "Marius Craciunoiu <m@m23.io>",
   "license": "MIT",
