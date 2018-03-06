@@ -15,10 +15,15 @@
     "test": "neutrino test"
   },
   "devDependencies": {
-    "@neutrinojs/airbnb-base": "^8.1.2",
+    "@neutrinojs/eslint": "^8.1.2",
     "@neutrinojs/jest": "^8.1.2",
     "@neutrinojs/library": "^8.1.2",
+    "@neutrinojs/standardjs": "^8.1.2",
     "babel-plugin-dynamic-import-node": "^1.2.0",
     "neutrino": "^8.1.2"
+  },
+  "dependencies": {
+    "fetch-ponyfill": "^6.0.0",
+    "qs": "^6.5.1"
   }
 }
