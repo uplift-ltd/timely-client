@@ -8,6 +8,7 @@
   "author": "Marius Craciunoiu <m@m23.io>",
   "license": "MIT",
   "scripts": {
+    "prepack": "neutrino build",
     "build": "neutrino build",
     "lint": "neutrino lint",
     "test": "neutrino test"
