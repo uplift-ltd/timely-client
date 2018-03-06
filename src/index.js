@@ -15,29 +15,35 @@ const fetchClient = (accessToken, apiUrl) => (url, o = {}) => {
     body: o.body && JSON.stringify(o.body),
   })
   return fetch(`${apiUrl}${url}${query}`, options).then(res => {
-    return res.json().then(body => ({
-      status: res.status,
-      statusText: res.statusText,
-      ok: res.ok,
-      body,
-    }))
+    return res.json().then(data => {
+      const result = {
+        status: res.status,
+        statusText: res.statusText,
+        ok: res.ok,
+        data,
+      }
+      if (res.status >= 200 && res.status < 400) {
+        return result
+      } else {
+        return Promise.reject(result)
+      }
+    })
   })
 }
 
 export default class TimelyClient {
-  constructor(o = {}) {
-    this._apiUrl = o.apiUrl || DEFAULT_API_URL
-    this._clientId = o.clientId
-    this._clientSecret = o.clientSecret
-    this._refreshToken = o.refreshToken
-    this._accessToken = o.accessToken
-    this.fetch = fetchClient(this._accessToken, this._apiUrl)
+  constructor(options = {}) {
+    const apiUrl = options.apiUrl || DEFAULT_API_URL
+    if (!options.accessToken) {
+      throw new Error('Missing required accessToken')
+    }
+    this.fetch = fetchClient(options.accessToken, apiUrl)
   }
 
   getAccounts() {
     return this.fetch('/accounts').then(res => {
       return Object.assign(res, {
-        body: res.body.map(account => new Account(account, this.fetch)),
+        data: res.data.map(account => new Account(account, this.fetch)),
       })
     })
   }
@@ -45,7 +51,7 @@ export default class TimelyClient {
   getAccount(id) {
     return this.fetch(`/accounts/${id}`).then(res => {
       return Object.assign(res, {
-        body: new Account(res.body, this.fetch),
+        data: new Account(res.data, this.fetch),
       })
     })
   }
@@ -126,7 +132,7 @@ export default class TimelyClient {
     })
   }
 
-  deleteUser(accountId, userId, body) {
+  deleteUser(accountId, userId) {
     return this.fetch(`/${accountId}/users/${userId}`, {
       method: 'DELETE',
     })
@@ -227,6 +233,7 @@ export default class TimelyClient {
   }
 }
 
+// TODO: deduplicate methods
 class Account {
   constructor(account, fetchClient) {
     Object.assign(this, account)
@@ -314,7 +321,7 @@ class Account {
     })
   }
 
-  deleteUser(userId, body) {
+  deleteUser(userId) {
     return this.fetch(`/${this.id}/users/${userId}`, {
       method: 'DELETE',
     })
