@@ -5,7 +5,7 @@ module.exports = {
       '@neutrinojs/eslint',
       {
         eslint: {
-          extends: ['prettier'],
+          extends: ['plugin:prettier/recommended'],
         },
       },
     ],
