@@ -224,7 +224,7 @@ export interface EventProject {
 export interface FilterReports {
   totals: FilterReportsTotals;
   clients: FilterReportsTotals[];
-  users: User[];
+  users: FilterReportsUser[];
   labels: Label[];
   days: FilterReportsTotals[];
   teams: FilterReportsTotals[];
