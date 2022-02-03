@@ -17,12 +17,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js with GitHub Packages
         uses: actions/setup-node@v1
         with:
           node-version: "14.x"
-          registry-url: "https://npm.pkg.github.com/"
-          scope: "@uplift-ltd"
+
       - name: Cache node_modules
         uses: actions/cache@master
         id: cache-node
@@ -33,6 +33,7 @@ jobs:
             node_modules
             packages/*/node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install dependencies
         # Always run this, so it throws if the package and lockfile don't match
         run: yarn install --non-interactive --frozen-lockfile --prefer-offline
