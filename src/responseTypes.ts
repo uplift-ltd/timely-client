@@ -264,6 +264,35 @@ export interface User {
   updated_at: string;
 }
 
+export interface UserDetail {
+  id: number;
+  email: string;
+  name: string;
+  active: boolean;
+  day_view_onboarded: boolean;
+  memory_onboarded: boolean;
+  created_at: number;
+  updated_at: number;
+  last_received_memories_date: null | string;
+  sign_in_count: number;
+  external_id: null;
+  time_zone: string;
+  avatar: Avatar;
+  type: string;
+  work_days: string;
+  weekdays: string;
+  weekly_capacity: number;
+  user_level: string;
+  admin: boolean;
+  hide_hourly_rate: boolean;
+  hide_internal_hourly_rate: boolean;
+  deleted: boolean;
+  default_hour_rate: number;
+  internal_hour_rate: number;
+  role_id: number;
+  role: UserRole;
+}
+
 export interface Avatar {
   large_retina: string;
   large: string;
