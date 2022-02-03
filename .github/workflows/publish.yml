@@ -12,7 +12,7 @@ on:
         required: true
 
 jobs:
-  yarn-install:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -43,10 +43,10 @@ jobs:
         run: |
           git config --global user.name "Uplift"
           git config --global user.email "uplift-ltd@users.noreply.github.com"
-          yarn version --non-interactive --new-version ${{ github.event.inputs.version }}npm publish
+          npm version ${{ github.event.inputs.version }}
 
       - name: Publish package
-        run: yarn publish --tag ${{ github.event.inputs.npm_tag }}
+        run: npm publish --tag ${{ github.event.inputs.npm_tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_TOKEN }}
 
