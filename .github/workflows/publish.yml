@@ -37,8 +37,6 @@ jobs:
       - name: Install dependencies
         # Always run this, so it throws if the package and lockfile don't match
         run: yarn install --non-interactive --frozen-lockfile --prefer-offline
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Bump version
         run: |
