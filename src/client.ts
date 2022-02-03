@@ -45,6 +45,7 @@ import {
   UserRole,
 } from "./responseTypes.js";
 import { TimelyError } from "./errors.js";
+import { assertAccountId } from "./helpers.js";
 
 type FetchClientResult<Data> = Pick<Response, "status" | "statusText" | "ok"> & {
   data: Data;
@@ -63,7 +64,7 @@ const fetchClient =
   async <Data>(
     url: RequestInfo,
     init: FetchClientInit = defaultFetchOptions
-  ): Promise<FetchClientResult<Data | null>> => {
+  ): Promise<FetchClientResult<Data>> => {
     const options: FetchClientInit = Object.assign({}, init, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -110,16 +111,16 @@ const fetchClient =
 const defaultTimelyClientOptions: TimelyClientOptions = { accessToken: "" };
 
 export class TimelyClient {
-  fetch: <Data>(
-    url: RequestInfo,
-    init?: FetchClientInit
-  ) => Promise<FetchClientResult<Data | null>>;
+  accountId?: number;
+
+  fetch: <Data>(url: RequestInfo, init?: FetchClientInit) => Promise<FetchClientResult<Data>>;
 
   constructor(options: TimelyClientOptions = defaultTimelyClientOptions) {
     const apiUrl = options.apiUrl || DEFAULT_API_URL;
     if (!options.accessToken) {
       throw new Error("Missing required accessToken");
     }
+    this.accountId = options.accountId;
     this.fetch = fetchClient(options.accessToken, apiUrl);
   }
 
@@ -129,12 +130,14 @@ export class TimelyClient {
     return res;
   }
 
-  async getAccount({ id }: GetAccountOptions) {
+  async getAccount({ id = this.accountId }: GetAccountOptions = {}) {
+    assertAccountId(id);
     const res = await this.fetch<Account>(`/accounts/${id}`);
     return res;
   }
 
-  async getActivities({ account_id, ...options }: GetActivitiesOptions) {
+  async getActivities({ account_id = this.accountId, ...options }: GetActivitiesOptions = {}) {
+    assertAccountId(account_id);
     const res = await this.fetch<Activitiy[]>(`/${account_id}/activities`, {
       urlParams: options,
     });
@@ -143,7 +146,8 @@ export class TimelyClient {
   // /Accounts
 
   // Clients
-  async getClients({ account_id, ...options }: GetClientsOptions) {
+  async getClients({ account_id = this.accountId, ...options }: GetClientsOptions = {}) {
+    assertAccountId(account_id);
     const res = await this.fetch<Client[]>(`/${account_id}/clients`, {
       urlParams: options,
     });
@@ -151,7 +155,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getClient({ account_id, id, ...options }: GetClientOptions) {
+  async getClient({ account_id = this.accountId, id, ...options }: GetClientOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Client>(`/${account_id}/clients/${id}`, {
       urlParams: options,
     });
@@ -159,7 +164,7 @@ export class TimelyClient {
     return res;
   }
 
-  // async createClient({ account_id, ...options }: CreateClientOptions) {
+  // async createClient({ account_id = this.accountId, ...options }: CreateClientOptions) {
   //   const res = await this.fetch<Client>(`/${account_id}/clients`, {
   //     method: "POST",
   //     body: options,
@@ -168,7 +173,7 @@ export class TimelyClient {
   //   return res;
   // }
 
-  // async updateClient({ account_id, id, ...options }: UpdateClientOptions) {
+  // async updateClient({ account_id = this.accountId, id, ...options }: UpdateClientOptions) {
   //   const res = await this.fetch<Client>(`/${account_id}/clients/${id}`, {
   //     method: "PUT",
   //     body: options,
@@ -179,7 +184,8 @@ export class TimelyClient {
   // /Clients
 
   // Events
-  async getEvents({ account_id, ...options }: GetEventsOptions) {
+  async getEvents({ account_id = this.accountId, ...options }: GetEventsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Event[]>(`/${account_id}/events`, {
       urlParams: options,
     });
@@ -187,7 +193,12 @@ export class TimelyClient {
     return res;
   }
 
-  async getProjectEvents({ account_id, project_id, ...options }: GetProjectEventsOptions) {
+  async getProjectEvents({
+    account_id = this.accountId,
+    project_id,
+    ...options
+  }: GetProjectEventsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Event[]>(`/${account_id}/projects/${project_id}/events`, {
       urlParams: options,
     });
@@ -195,7 +206,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getUserEvents({ account_id, user_id, ...options }: GetUserEventsOptions) {
+  async getUserEvents({ account_id = this.accountId, user_id, ...options }: GetUserEventsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Event[]>(`/${account_id}/users/${user_id}/events`, {
       urlParams: options,
     });
@@ -203,7 +215,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getEvent({ account_id, id, ...options }: GetEventOptions) {
+  async getEvent({ account_id = this.accountId, id, ...options }: GetEventOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Event[]>(`/${account_id}/events/${id}`, {
       urlParams: options,
     });
@@ -213,7 +226,8 @@ export class TimelyClient {
   // /Events
 
   // Labels
-  async getLabels({ account_id, ...options }: GetLabelsOptions) {
+  async getLabels({ account_id = this.accountId, ...options }: GetLabelsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Label[]>(`/${account_id}/labels`, {
       urlParams: options,
     });
@@ -221,7 +235,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getChildLabels({ account_id, ...options }: GetChildLabelsOptions) {
+  async getChildLabels({ account_id = this.accountId, ...options }: GetChildLabelsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Label[]>(`/${account_id}/labels`, {
       urlParams: options,
     });
@@ -229,7 +244,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getLabel({ account_id, id, ...options }: GetLabelOptions) {
+  async getLabel({ account_id = this.accountId, id, ...options }: GetLabelOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Label[]>(`/${account_id}/labels/${id}`, {
       urlParams: options,
     });
@@ -239,7 +255,11 @@ export class TimelyClient {
   // /Labels
 
   // Permissions
-  async getCurrentUserPermissions({ account_id, ...options }: GetCurrentUserPermissionsOptions) {
+  async getCurrentUserPermissions({
+    account_id = this.accountId,
+    ...options
+  }: GetCurrentUserPermissionsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Permission[]>(`/${account_id}/users/current/permissions`, {
       urlParams: options,
     });
@@ -247,7 +267,12 @@ export class TimelyClient {
     return res;
   }
 
-  async getUserPermissions({ account_id, user_id, ...options }: GetUserPermissionsOptions) {
+  async getUserPermissions({
+    account_id = this.accountId,
+    user_id,
+    ...options
+  }: GetUserPermissionsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Permission[]>(`/${account_id}/users/${user_id}/permissions`, {
       urlParams: options,
     });
@@ -257,7 +282,8 @@ export class TimelyClient {
   // /Permissions
 
   // Projects
-  async getProjects({ account_id, ...options }: GetProjectsOptions) {
+  async getProjects({ account_id = this.accountId, ...options }: GetProjectsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Project[]>(`/${account_id}/projects`, {
       urlParams: options,
     });
@@ -265,7 +291,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getProject({ account_id, id, ...options }: GetProjectOptions) {
+  async getProject({ account_id = this.accountId, id, ...options }: GetProjectOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Project[]>(`/${account_id}/projects/${id}`, {
       urlParams: options,
     });
@@ -275,7 +302,8 @@ export class TimelyClient {
   // /Projects
 
   // Reports
-  async getReports({ account_id, ...options }: GetReportsOptions) {
+  async getReports({ account_id = this.accountId, ...options }: GetReportsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Report[]>(`/${account_id}/reports`, {
       urlParams: options,
     });
@@ -283,7 +311,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getFilterReports({ account_id, ...options }: GetFilterReportsOptions) {
+  async getFilterReports({ account_id = this.accountId, ...options }: GetFilterReportsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<FilterReports>(`/${account_id}/reports/filter`, {
       urlParams: options,
     });
@@ -293,7 +322,8 @@ export class TimelyClient {
   // /Reports
 
   // Roles
-  async getRoles({ account_id, ...options }: GetRolesOptions) {
+  async getRoles({ account_id = this.accountId, ...options }: GetRolesOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<UserRole[]>(`/${account_id}/roles`, {
       urlParams: options,
     });
@@ -303,7 +333,8 @@ export class TimelyClient {
   // /Roles
 
   // Teams
-  async getTeams({ account_id, ...options }: GetTeamsOptions) {
+  async getTeams({ account_id = this.accountId, ...options }: GetTeamsOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Team[]>(`/${account_id}/teams`, {
       urlParams: options,
     });
@@ -311,7 +342,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getTeam({ account_id, id, ...options }: GetTeamOptions) {
+  async getTeam({ account_id = this.accountId, id, ...options }: GetTeamOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<Team>(`/${account_id}/teams/${id}`, {
       urlParams: options,
     });
@@ -321,7 +353,8 @@ export class TimelyClient {
   // /Teams
 
   // UserCapacities
-  async getUsersCapacities({ account_id, ...options }: GetUsersCapacitiesOptions) {
+  async getUsersCapacities({ account_id = this.accountId, ...options }: GetUsersCapacitiesOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<UserCapacities[]>(`/${account_id}/users/capacities`, {
       urlParams: options,
     });
@@ -329,7 +362,12 @@ export class TimelyClient {
     return res;
   }
 
-  async getUserCapacities({ account_id, user_id, ...options }: GetUserCapacitiesOptions) {
+  async getUserCapacities({
+    account_id = this.accountId,
+    user_id,
+    ...options
+  }: GetUserCapacitiesOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<UserCapacities[]>(`/${account_id}/users/${user_id}/capacities`, {
       urlParams: options,
     });
@@ -339,7 +377,8 @@ export class TimelyClient {
   // /UserCapacities
 
   // UserCapacities
-  async getUsers({ account_id, ...options }: GetUsersOptions) {
+  async getUsers({ account_id = this.accountId, ...options }: GetUsersOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<User[]>(`/${account_id}/users`, {
       urlParams: options,
     });
@@ -347,7 +386,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getUser({ account_id, id, ...options }: GetUserOptions) {
+  async getUser({ account_id = this.accountId, id, ...options }: GetUserOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<UserCapacities[]>(`/${account_id}/users/${id}`, {
       urlParams: options,
     });
@@ -355,7 +395,8 @@ export class TimelyClient {
     return res;
   }
 
-  async getCurrentUser({ account_id, ...options }: GetCurrentUserOptions) {
+  async getCurrentUser({ account_id = this.accountId, ...options }: GetCurrentUserOptions) {
+    assertAccountId(account_id);
     const res = await this.fetch<UserCapacities[]>(`/${account_id}/users/current`, {
       urlParams: options,
     });

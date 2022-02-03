@@ -1,12 +1,14 @@
 export interface TimelyClientOptions {
   /** Default: https://api.timelyapp.com/1.1 */
   apiUrl?: string;
+  /** The account id if you don't want to provide it to every method */
+  accountId?: number;
   accessToken: string;
 }
 
 // Common
 export interface AccountSpecificOptions {
-  account_id: number;
+  account_id?: number;
 }
 
 export interface ProjectSpecificOptions {
@@ -44,7 +46,7 @@ export interface GetAccountsOptions {}
 
 export interface GetAccountOptions {
   /** The ID of the account you want to retrieve */
-  id: number;
+  id?: number;
 }
 export interface GetActivitiesOptions
   extends AccountSpecificOptions,
@@ -52,7 +54,7 @@ export interface GetActivitiesOptions
     OrderingOptions,
     FilterOptions {
   /** The ID of the account you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** Retrieve activities from offset */
   offset?: number;
@@ -71,7 +73,7 @@ export interface GetActivitiesOptions
 // Clients
 export interface GetClientsOptions extends AccountSpecificOptions, OffsetLimitPaginationOptions {
   /** Account ID for the clients you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** Retrieve clients from offset */
   offset?: number;
@@ -85,7 +87,7 @@ export interface GetClientsOptions extends AccountSpecificOptions, OffsetLimitPa
 
 export interface GetClientOptions extends AccountSpecificOptions {
   /** Account ID for the client you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** Client ID to retrieve */
   id: string;
@@ -93,7 +95,7 @@ export interface GetClientOptions extends AccountSpecificOptions {
 
 // export interface CreateClientOptions extends AccountSpecificOptions {
 //   /** Account ID for the client you want to create */
-//   account_id: number;
+//   account_id?: number;
 
 //   /** Specifies the client name */
 //   name: string;
@@ -107,7 +109,7 @@ export interface GetClientOptions extends AccountSpecificOptions {
 
 // export interface UpdateClientOptions extends AccountSpecificOptions {
 //   /** Account ID for the client you want to update */
-//   account_id: number;
+//   account_id?: number;
 
 //   /** Client ID */
 //   id: string;
@@ -155,7 +157,7 @@ export interface GetEventsOptions
     PagePaginationOptions,
     BaseEventsOptions {
   /** Account ID for the events you want to retrieve */
-  account_id: number;
+  account_id?: number;
 }
 
 export interface GetProjectEventsOptions
@@ -164,7 +166,7 @@ export interface GetProjectEventsOptions
     PagePaginationOptions,
     BaseEventsOptions {
   /** Account ID for the events you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** Project ID for the events you want to retrieve */
   project_id: number;
@@ -176,7 +178,7 @@ export interface GetUserEventsOptions
     PagePaginationOptions,
     BaseEventsOptions {
   /** Account ID for the events you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** user_id ID for the events you want to retrieve */
   user_id: number;
@@ -184,7 +186,7 @@ export interface GetUserEventsOptions
 
 export interface GetEventOptions extends AccountSpecificOptions {
   /** Account ID for the event you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** Event ID */
   id: number;
@@ -194,7 +196,7 @@ export interface GetEventOptions extends AccountSpecificOptions {
 // Labels
 export interface GetLabelsOptions extends AccountSpecificOptions, OffsetLimitPaginationOptions {
   /** Account ID for the labels you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** Retrieve activities from offset */
   offset?: number;
@@ -210,7 +212,7 @@ export interface GetChildLabelsOptions
   extends AccountSpecificOptions,
     OffsetLimitPaginationOptions {
   /** Account ID for the labels you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** The parent ID whose children you want to retrieve */
   parentId: number;
@@ -218,7 +220,7 @@ export interface GetChildLabelsOptions
 
 export interface GetLabelOptions extends AccountSpecificOptions {
   /** Account ID for the labels you want to retrieve */
-  account_id: number;
+  account_id?: number;
 
   /** The ID of the label you want to retrieve */
   id: number;
@@ -228,12 +230,12 @@ export interface GetLabelOptions extends AccountSpecificOptions {
 // Permissions
 export interface GetCurrentUserPermissionsOptions extends AccountSpecificOptions {
   /** Account ID for which current user's permissions are to be retrieved */
-  account_id: number;
+  account_id?: number;
 }
 
 export interface GetUserPermissionsOptions extends AccountSpecificOptions {
   /** Account ID for which current user's permissions are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** User whose permissions are required */
   user_id: number;
@@ -246,7 +248,7 @@ export interface GetProjectsOptions
     OffsetLimitPaginationOptions,
     OrderingOptions {
   /** Account ID for which current user's projects are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** Retrieve projects from offset */
   offset?: number;
@@ -272,7 +274,7 @@ export interface GetProjectsOptions
 
 export interface GetProjectOptions extends AccountSpecificOptions {
   /** Account ID for which current user's projects are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** The ID of the project you want to retrieve
    */
@@ -283,7 +285,7 @@ export interface GetProjectOptions extends AccountSpecificOptions {
 // Reports
 export interface GetReportsOptions extends AccountSpecificOptions {
   /** Account ID for which current user's reports are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** Specifies the users for which you want reports. Numerical user IDs should separated by a comma, like so: "user_ids": "175551,117861" */
   user_ids?: number | number[];
@@ -309,7 +311,7 @@ export interface GetFilterReportsOptions
     OffsetLimitPaginationOptions,
     GetReportsOptions {
   /** Account ID for which current user's reports are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** Specifies the users for which you want reports. Numerical user IDs should separated by a comma, like so: "user_ids": "175551,117861" */
   user_ids?: number | number[];
@@ -355,7 +357,7 @@ export interface GetFilterReportsOptions
 // Roles
 export interface GetRolesOptions extends AccountSpecificOptions {
   /** Account ID for which roles are to be retrieved */
-  account_id: number;
+  account_id?: number;
 }
 // /Roles
 
@@ -365,7 +367,7 @@ export interface GetTeamsOptions
     PagePaginationOptions,
     OrderingOptions {
   /** Account ID for which teams are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** Records per page (Default 50) */
   per_page?: number;
@@ -382,7 +384,7 @@ export interface GetTeamsOptions
 
 export interface GetTeamOptions extends AccountSpecificOptions {
   /** Account ID for which teams are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** Team ID */
   id: number;
@@ -392,7 +394,7 @@ export interface GetTeamOptions extends AccountSpecificOptions {
 // UserCapacities
 export interface GetUsersCapacitiesOptions extends AccountSpecificOptions {
   /** Account ID for which users' capacities are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** Users whose capacities are required */
   user_ids?: number | number[];
@@ -406,7 +408,7 @@ export interface GetUsersCapacitiesOptions extends AccountSpecificOptions {
 
 export interface GetUserCapacitiesOptions extends AccountSpecificOptions {
   /** Account ID for which user's capacities are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** User whose capacities are required */
   user_id?: number;
@@ -419,7 +421,7 @@ export interface GetUsersOptions
     OffsetLimitPaginationOptions,
     OrderingOptions {
   /** Account ID for which users are to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** Retrieve users from offset */
   offset?: number;
@@ -436,7 +438,7 @@ export interface GetUsersOptions
 
 export interface GetUserOptions extends AccountSpecificOptions {
   /** Account ID for which user is to be retrieved */
-  account_id: number;
+  account_id?: number;
 
   /** The ID of the user you want to retrieve */
   id?: number;
@@ -444,9 +446,9 @@ export interface GetUserOptions extends AccountSpecificOptions {
 
 export interface GetCurrentUserOptions extends AccountSpecificOptions {
   /** Account ID for which user is to be retrieved */
-  account_id: number;
+  account_id?: number;
 }
 // /Users
 
 /** Account ID for the client you want to retrieve */
-// account_id: number;
+// account_id?: number;
