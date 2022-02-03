@@ -1,32 +1,28 @@
 {
   "name": "timely-client",
   "version": "0.1.1",
-  "description": "Client for Timely App API.",
+  "description": "Unofficial client for Timely App API.",
   "main": "build/index.js",
+  "type": "module",
   "files": [
     "build",
     "README.md"
   ],
-  "repository": "https://github.com/mariusc23/timely-client.git",
-  "author": "Marius Craciunoiu <m@m23.io>",
+  "repository": "https://github.com/uplift-ltd/timely-client.git",
+  "author": "Marius Craciunoiu <marius@uplift.ltd>",
   "license": "MIT",
   "scripts": {
-    "prepack": "neutrino build",
-    "build": "neutrino build",
-    "lint": "neutrino lint",
-    "test": "neutrino test"
+    "prepack": "yarn build",
+    "test": "tsc --noEmit",
+    "build": "rm -rf build && tsc",
+    "prettier:check": "prettier --list-different\"src/**/*.{js,jsx,ts,tsx,json,md,css,scss}\"",
+    "prettier:write": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,md,css,scss}\""
   },
   "devDependencies": {
-    "@neutrinojs/eslint": "^8.1.2",
-    "@neutrinojs/jest": "^8.1.2",
-    "@neutrinojs/library": "^8.1.2",
-    "@neutrinojs/standardjs": "^8.1.2",
-    "babel-plugin-dynamic-import-node": "^1.2.0",
-    "neutrino": "^8.1.2",
-    "prettier": "^1.11.1"
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.5"
   },
   "dependencies": {
-    "fetch-ponyfill": "^6.0.0",
-    "qs": "^6.5.1"
+    "node-fetch": "^3.2.0"
   }
 }
