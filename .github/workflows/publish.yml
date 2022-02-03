@@ -22,6 +22,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "14.x"
+          registry-url: https://registry.npmjs.org/
 
       - name: Cache node_modules
         uses: actions/cache@master
@@ -45,7 +46,7 @@ jobs:
           npm version ${{ github.event.inputs.version }}
 
       - name: Publish package
-        run: npm publish --tag ${{ github.event.inputs.npm_tag }}
+        run: npm publish --access public --tag ${{ github.event.inputs.npm_tag }}
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PUBLISH_NPM_TOKEN }}
 
