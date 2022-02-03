@@ -44,6 +44,7 @@ import {
   UserCapacities,
   UserRole,
 } from "./responseTypes.js";
+import { TimelyError } from "./errors.js";
 
 type FetchClientResult<Data> = Pick<Response, "status" | "statusText" | "ok"> & {
   data: Data;
@@ -80,12 +81,16 @@ const fetchClient =
 
     const res = await fetch(`${apiUrl}${url}${query}`, options);
 
-    let data: Data | null = null;
+    let data;
 
     try {
       data = (await res.json()) as Data;
     } catch (err) {
       console.error(res.status, err);
+    }
+
+    if (!data) {
+      throw new TimelyError("Failed to fetch timely data", res);
     }
 
     const result = {
@@ -95,10 +100,10 @@ const fetchClient =
       data,
     };
 
-    if (res.status >= 200 && res.status < 400) {
+    if (res.status >= 200 && res.status < 300) {
       return result;
     } else {
-      throw result;
+      throw new TimelyError("Received error status code from timely", res);
     }
   };
 
