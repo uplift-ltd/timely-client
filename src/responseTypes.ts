@@ -30,13 +30,23 @@ export interface Account {
   num_projects: number;
   active_projects_count: number;
   total_projects_count: number;
-  capacity: Capacity;
+  capacity: AccountCapacity;
   status: string;
   beta: boolean;
   expired: boolean;
   trial: boolean;
   days_to_end_trial: number;
   features: Feature[];
+}
+
+export interface AccountCapacity {
+  hours: number;
+  minutes: number;
+  seconds: number;
+  formatted: string;
+  total_hours: number;
+  total_seconds: number;
+  total_minutes: number;
 }
 
 export interface Activitiy {
@@ -71,16 +81,6 @@ export enum BudgetCalculation {
 export enum BudgetType {
   Empty = "",
   M = "M",
-}
-
-export interface Capacity {
-  hours: number;
-  minutes: number;
-  seconds: number;
-  formatted: string;
-  total_hours: number;
-  total_seconds: number;
-  total_minutes: number;
 }
 
 export interface Client {
@@ -477,7 +477,7 @@ export interface User {
 
 export interface UserCapacities {
   user_id: number;
-  capacities: Capacity[];
+  capacities: UserCapacity[];
 }
 
 export interface UserCapacity {
