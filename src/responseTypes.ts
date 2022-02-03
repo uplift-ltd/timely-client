@@ -39,36 +39,6 @@ export interface Account {
   features: Feature[];
 }
 
-export interface Capacity {
-  hours: number;
-  minutes: number;
-  seconds: number;
-  formatted: string;
-  total_hours: number;
-  total_seconds: number;
-  total_minutes: number;
-}
-
-export interface Currency {
-  id: string;
-  name: string;
-  iso_code: string;
-  symbol: string;
-  symbol_first: boolean;
-}
-
-export interface Feature {
-  name: string;
-  days: number;
-}
-
-export interface Logo {
-  large_retina: string;
-  medium_retina: string;
-  small_retina: string;
-  brand_logo: boolean;
-}
-
 export interface Activitiy {
   id: number;
   user: User;
@@ -85,6 +55,84 @@ export interface Activitiy {
   anomaly: boolean;
 }
 
+export interface Avatar {
+  large_retina: string;
+  large: string;
+  medium_retina: string;
+  medium: string;
+  timeline: string;
+}
+
+export enum BudgetCalculation {
+  Completed = "completed",
+  Pending = "pending",
+}
+
+export enum BudgetType {
+  Empty = "",
+  M = "M",
+}
+
+export interface Capacity {
+  hours: number;
+  minutes: number;
+  seconds: number;
+  formatted: string;
+  total_hours: number;
+  total_seconds: number;
+  total_minutes: number;
+}
+
+export interface Client {
+  id: number;
+  name: string;
+  active: boolean;
+  external_id: null;
+  updated_at: string;
+}
+
+export interface Cost {
+  fractional: number;
+  formatted: string;
+  amount: number;
+}
+
+export interface Currency {
+  id: string;
+  name: string;
+  iso_code: string;
+  symbol: string;
+  symbol_first: boolean;
+}
+
+export interface Duration {
+  hours: number;
+  minutes: number;
+  seconds: number;
+  formatted: string;
+  total_hours: number;
+  total_seconds: number;
+  total_minutes: number;
+}
+
+export interface Feature {
+  name: string;
+  days: number;
+}
+
+export interface Logo {
+  large_retina: string;
+  medium_retina: string;
+  small_retina: string;
+  brand_logo: boolean;
+}
+
+export enum EnableLabels {
+  All = "all",
+  Custom = "custom",
+  None = "none",
+}
+
 export interface Entity {
   id: number;
   active: boolean;
@@ -94,41 +142,9 @@ export interface Entity {
   updated_at: string;
 }
 
-export interface Client {
-  id: number;
-  name: string;
-  active: boolean;
-  external_id: null;
-  updated_at: string;
-}
-
 export enum EntityType {
   Company = "Company",
   Project = "Project",
-}
-
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  avatar: Avatar;
-  updated_at: string;
-}
-
-export interface Avatar {
-  large_retina: string;
-  large: string;
-  medium_retina: string;
-  medium: string;
-  timeline: string;
-}
-
-export interface Client {
-  id: number;
-  name: string;
-  active: boolean;
-  external_id: null;
-  updated_at: string;
 }
 
 export interface Event {
@@ -175,22 +191,6 @@ export interface Event {
   timestamps: any[];
 }
 
-export interface Cost {
-  fractional: number;
-  formatted: string;
-  amount: number;
-}
-
-export interface Duration {
-  hours: number;
-  minutes: number;
-  seconds: number;
-  formatted: string;
-  total_hours: number;
-  total_seconds: number;
-  total_minutes: number;
-}
-
 export interface EventProject {
   id: number;
   active: boolean;
@@ -221,20 +221,93 @@ export interface EventProject {
   required_label_ids: number[];
 }
 
-export enum BudgetCalculation {
-  Completed = "completed",
-  Pending = "pending",
+export interface FilterReports {
+  totals: FilterReportsTotals;
+  clients: FilterReportsTotals[];
+  users: User[];
+  labels: Label[];
+  days: FilterReportsTotals[];
+  teams: FilterReportsTotals[];
 }
 
-export enum BudgetType {
-  Empty = "",
-  M = "M",
+export interface FilterReportsUser {
+  id: number;
+  email: string;
+  name: string;
+  time_zone: string;
+  updated_at: number;
+  active: boolean;
+  deleted: boolean;
+  memory_onboarded: boolean;
+  day_view_onboarded: boolean;
+  last_received_memories_date: null | string;
+  date_format: string;
+  time_format: string;
+  avatar: Avatar;
+  duration: Duration;
+  estimated_duration: Duration;
+  billed_duration: Duration;
+  unbilled_duration: Duration;
+  billable_duration: Duration;
+  non_billable_duration: Duration;
+  cost: Cost;
+  estimated_cost: Cost;
+  billed_cost: Cost;
+  unbilled_cost: Cost;
+  internal_hour_rate?: number;
 }
 
-export enum EnableLabels {
-  All = "all",
-  Custom = "custom",
-  None = "none",
+export interface FilterReportsProject {
+  id: number;
+  active: boolean;
+  account_id: number;
+  name: string;
+  color: string;
+  rate_type: string;
+  billable: boolean;
+  updated_at: number;
+  external_id: null;
+  budget_scope: null;
+  client: Client;
+  required_notes: boolean;
+  required_labels: boolean;
+  budget_expired_on: null;
+  has_recurrence: boolean;
+  enable_labels: string;
+  budget: number;
+  budget_type: string;
+  budget_calculation: string;
+  hour_rate: number;
+  hour_rate_in_cents: number;
+  budget_progress: number;
+  budget_percent: number;
+  invoice_by_budget: boolean;
+  duration: Duration;
+  estimated_duration: Duration;
+  billed_duration: Duration;
+  unbilled_duration: Duration;
+  billable_duration: Duration;
+  non_billable_duration: Duration;
+  cost: Cost;
+  estimated_cost: Cost;
+  billed_cost: Cost;
+  unbilled_cost: Cost;
+}
+
+export interface FilterReportsTotals {
+  id?: number;
+  name?: string;
+  projects?: FilterReportsProject[];
+  duration: Duration;
+  estimated_duration: Duration;
+  billed_duration: Duration;
+  unbilled_duration: Duration;
+  billable_duration: Duration;
+  non_billable_duration: Duration;
+  cost: Cost;
+  estimated_cost: Cost;
+  billed_cost: Cost;
+  unbilled_cost: Cost;
 }
 
 export interface Label {
@@ -244,66 +317,6 @@ export interface Label {
   required: boolean;
   updated_at: string;
   children?: Label[];
-}
-
-export enum RateType {
-  NonBillable = "non-billable",
-  User = "user",
-}
-
-export enum TimerState {
-  Default = "default",
-  Stop = "stop",
-}
-
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  avatar: Avatar;
-  updated_at: string;
-}
-
-export interface UserDetail {
-  id: number;
-  email: string;
-  name: string;
-  active: boolean;
-  day_view_onboarded: boolean;
-  memory_onboarded: boolean;
-  created_at: number;
-  updated_at: number;
-  last_received_memories_date: null | string;
-  sign_in_count: number;
-  external_id: null;
-  time_zone: string;
-  avatar: Avatar;
-  type: string;
-  work_days: string;
-  weekdays: string;
-  weekly_capacity: number;
-  user_level: string;
-  admin: boolean;
-  hide_hourly_rate: boolean;
-  hide_internal_hourly_rate: boolean;
-  deleted: boolean;
-  default_hour_rate: number;
-  internal_hour_rate: number;
-  role_id: number;
-  role: UserRole;
-}
-
-export interface Avatar {
-  large_retina: string;
-  large: string;
-  medium_retina: string;
-  medium: string;
-  timeline: string;
-}
-
-export interface ResourcePermissions {
-  resource: string;
-  permissions: string[];
 }
 
 export enum Permission {
@@ -361,6 +374,11 @@ export interface ProjectUser {
   deleted: boolean;
 }
 
+export enum RateType {
+  NonBillable = "non-billable",
+  User = "user",
+}
+
 export interface Report {
   id: number;
   name: string;
@@ -414,38 +432,9 @@ export interface ReportProject {
   unbilled_cost: Cost;
 }
 
-export interface FilterReports {
-  totals: Totals;
-  clients: Totals[];
-  users: User[];
-  labels: any[];
-  days: any[];
-  teams: any[];
-}
-
-export interface Totals {
-  id?: number;
-  name?: string;
-  projects?: ReportProject[];
-  duration: Duration;
-  estimated_duration: Duration;
-  billed_duration: Duration;
-  unbilled_duration: Duration;
-  billable_duration: Duration;
-  non_billable_duration: Duration;
-  cost: Cost;
-  estimated_cost: Cost;
-  billed_cost: Cost;
-  unbilled_cost: Cost;
-}
-
-export interface UserRole {
-  id: number;
-  name: string;
-  display_name: string;
-  description: string;
-  scopes: Scope[];
-  default: boolean;
+export interface ResourcePermissions {
+  resource: string;
+  permissions: string[];
 }
 
 export interface Scope {
@@ -473,6 +462,19 @@ export interface TeamUser {
   lead: boolean;
 }
 
+export enum TimerState {
+  Default = "default",
+  Stop = "stop",
+}
+
+export interface User {
+  id: number;
+  email: string;
+  name: string;
+  avatar: Avatar;
+  updated_at: string;
+}
+
 export interface UserCapacities {
   user_id: number;
   capacities: Capacity[];
@@ -489,4 +491,42 @@ export interface UserCapacity {
   current: boolean;
   start_date: string;
   end_date: null | string;
+}
+
+export interface UserDetail {
+  id: number;
+  email: string;
+  name: string;
+  active: boolean;
+  day_view_onboarded: boolean;
+  memory_onboarded: boolean;
+  created_at: number;
+  updated_at: number;
+  last_received_memories_date: null | string;
+  sign_in_count: number;
+  external_id: null;
+  time_zone: string;
+  avatar: Avatar;
+  type: string;
+  work_days: string;
+  weekdays: string;
+  weekly_capacity: number;
+  user_level: string;
+  admin: boolean;
+  hide_hourly_rate: boolean;
+  hide_internal_hourly_rate: boolean;
+  deleted: boolean;
+  default_hour_rate: number;
+  internal_hour_rate: number;
+  role_id: number;
+  role: UserRole;
+}
+
+export interface UserRole {
+  id: number;
+  name: string;
+  display_name: string;
+  description: string;
+  scopes: Scope[];
+  default: boolean;
 }
